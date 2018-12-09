@@ -21,9 +21,11 @@ Download ov_total.zip, brca_total.zip, models.py into the same fold and decompre
 * **models.py:** This is the execution file, including all the models' realization codes.
 
 ## Data clean 
-In order to reduce data noise, the genes whose values' mean and standard deviation values are at low level in both datasets should be removed. Initial level threshold is 50%. 
+In order to reduce data noise, the genes whose values' mean and standard deviation values are at low level in both datasets should be removed. The initial level threshold is 50%, it can be changed in the read_data function of the models.py file.
 
 ## Cross-validation
+All models will run though the same cross validation process together. For both data sets, 20 samples are randomly selected for test part, 20 samples for validation part, the rest samples are training data sets.
+
 
 
 
