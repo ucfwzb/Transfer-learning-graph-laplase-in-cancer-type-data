@@ -12,7 +12,7 @@ import pickle
 np.random.seed(20)
 np.set_printoptions(threshold=np.inf)
 
-### This function reads data sets 
+### This function reads data sets from pkl files directly, after that, data cleaning process will be excuated too
 def read_data(preprocess_scale):  
     D1=pickle.load(open(os.getcwd()+'/brca_total.pkl','rb'))        
     label_1=D1[0].values
@@ -42,9 +42,8 @@ def read_data(preprocess_scale):
         D2=D2.values
         data_1 =D1
         data_2 =D2
-### Here the matrix is feature x sample
         
-### delete the features which have more than 30 0's
+### Delete the features which have more than 30 0s, since this kind feature is not significant.
     length=data_1.shape[0]
     ind = []
     for i in range(length):
@@ -57,7 +56,7 @@ def read_data(preprocess_scale):
     ind =list(set(ind))
     data_1 = np.delete(data_1, ind, axis=0)
     data_2 = np.delete(data_2, ind, axis=0)
-### delete the features which have low mean and variance 
+### Delete the features which have low mean and variance, the threshold is 50%.
     line_1_var=[]
     line_2_var=[]
     line_1_mean=[]
@@ -88,10 +87,10 @@ def read_data(preprocess_scale):
     data_2=data_2.T
     n=data_1.shape[1]
     return n,data_1,data_2,label_1,label_2
-### output matrix with shape sample x features, n is the number of features
+### output the data matrices, n is the number of features
 
 
-### cross nethod
+### The defination of the cross valation nethod
 def cross_valudation(data_1_all,data_2_all,label_1_all,label_2_all,valudation_number,test_number):
 ### get the test part
     data_1, data1_test, label_1, label1_test=train_test_split(data_1_all, label_1_all,test_size=test_number) 
@@ -106,8 +105,7 @@ def cross_valudation(data_1_all,data_2_all,label_1_all,label_2_all,valudation_nu
 
 
 
-### SVC area
-    
+### SVC area, which is used for the model1's classfication part
 def svc_result(data_train,data_test,label_train,label_test):
     if data_train.shape[-1]==0:
         return 0
@@ -121,7 +119,8 @@ def svc_result(data_train,data_test,label_train,label_test):
     
 
 ### model1 area
-## get laplace matrix
+
+## This is defination of laplace matrix
 def laplace_matrix(n, data):
     cc_matrix=np.corrcoef(data.T)
     cc_matrix=np.abs(cc_matrix)
@@ -131,7 +130,7 @@ def laplace_matrix(n, data):
     laplace=np.eye(n)-np.dot(np.dot(normlize_matrix,adj_matrix),normlize_matrix)
     return laplace
 
-## get y
+## This is the defination of data y, 
 def intial_y(n,data,label):
     y=np.zeros(n).reshape(n,1)
     for i in range(n):
