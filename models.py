@@ -130,7 +130,7 @@ def laplace_matrix(n, data):
     laplace=np.eye(n)-np.dot(np.dot(normlize_matrix,adj_matrix),normlize_matrix)
     return laplace
 
-## This is the defination of data y, 
+## This is the defination of data y, which represents the relationship of the label and gene expression of each sample
 def intial_y(n,data,label):
     y=np.zeros(n).reshape(n,1)
     for i in range(n):
@@ -138,12 +138,14 @@ def intial_y(n,data,label):
     y=np.abs(y)
     return y
 
+## this is the intialzation of feature selection list, all elements are set to be small amount
 def intial_f(n):
     f1=np.repeat(1./n,n).reshape(n,1)
     f2=f1.copy()
     fc=f1.copy()
     return f1,f2,fc
 
+## In the approach process, this function is used to update the feature selection list fi. i=1,2
 def model1_update_fi(n,laplace,fi,fc,y,alpha,gamma):
     Q=np.linalg.cholesky(alpha*laplace+(1-alpha)*np.eye(n))
     Y=-(np.dot(fc.T,Q.T-(1-alpha)*np.dot(y.T,np.linalg.inv(Q)))).T
@@ -153,7 +155,7 @@ def model1_update_fi(n,laplace,fi,fc,y,alpha,gamma):
     fi=fi.reshape((n,1))
     return fi
 
-
+## In the approach process, this function is used to update the common feature selection list fc.
 def model1_update_fc(n,laplace1,laplace2,f1,y1,f2,y2,fc,alpha,gamma):
     Q=np.linalg.cholesky(alpha*laplace1+2*(1-alpha)*np.eye(n)+alpha*laplace2)
     Y=-(np.dot((alpha*np.dot(f1.T,laplace1)+(1-alpha)*(f1-y1).T)+(alpha*np.dot(f2.T,laplace2)+(1-alpha)*(f2-y2).T),np.linalg.inv(Q))).T
@@ -163,6 +165,8 @@ def model1_update_fc(n,laplace1,laplace2,f1,y1,f2,y2,fc,alpha,gamma):
     fc = fc.reshape((1, len(fc)))
     return fc
 
+## Once the model1 function generate the feature selection list already, this function can generate the roc value
+## based on the list to evaluate the model's performance 
 def model1_roc(n,f1,f2,data1,data2,label1_train,label1_test,label2_train,label2_test):
     f1[f1>0]=1
     f1[f1<=0]=0
@@ -194,7 +198,8 @@ def model1_roc(n,f1,f2,data1,data2,label1_train,label1_test,label2_train,label2_
     roc2=svc_result(data2_train,data2_test,label2_train,label2_test)
     return roc1, roc2
         
-
+## this function trains model1 on the training data set, and output the roc values which is based on the model's
+## performance on the validation data
 def train_model1(n,data1_train, data1_valudation, label1_train,label1_valudation, \
                  data2_train, data2_valudation, label2_train, label2_valudation, alpha,gamma1,gamma2,gamma3):
     data1=np.concatenate((data1_train,data1_valudation),axis=0)
@@ -223,6 +228,9 @@ def train_model1(n,data1_train, data1_valudation, label1_train,label1_valudation
     roc1_train, roc2_train= model1_roc(n,f1,f2,data1,data2,label1_train,label1_valudation,label2_train,label2_valudation)
     return roc1_train,roc2_train
     
+    
+## this function trains the model1 on the same training data set and output its roc value
+## to evaluate its performance on the test data sets
 def test_model1(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation, label1_test,\
            data2_train, data2_valudation, data2_test, label2_train, label2_valudation, label2_test,alpha,gamma1,gamma2,gamma3):
     data1=np.concatenate((data1_train,data1_valudation),axis=0)
@@ -259,6 +267,8 @@ def test_model1(n,data1_train, data1_valudation, data1_test, label1_train,label1
 
  
 ### model1 main area   
+## this function utilize the functions above to output all the roc values of model1 based on the training data sets,
+## validation data sets, test data sets
 def model1(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation, label1_test,\
            data2_train, data2_valudation, data2_test, label2_train, label2_valudation, label2_test,alpha,gamma1,gamma2,gamma3):
     roc1_train,roc2_train=train_model1(n,data1_train, data1_valudation, label1_train,label1_valudation,\
@@ -268,6 +278,8 @@ def model1(n,data1_train, data1_valudation, data1_test, label1_train,label1_valu
     
     return roc1_train,roc2_train, roc1_test, roc2_test
 
+
+## This function runs model1 all over the possible parameters which are defined 
 def model1_roc_all(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation, label1_test,\
            data2_train, data2_valudation, data2_test, label2_train, label2_valudation, label2_test):
     alpha = 0.1
@@ -293,6 +305,8 @@ def model1_roc_all(n,data1_train, data1_valudation, data1_test, label1_train,lab
     return model1_roc_train, model2_roc_train, model1_roc_test, model2_roc_test
 
 # base model1 part
+## this function defines the base model, a graph laplace model without the transfer learning method 
+## it outputs the feature selection and the data it used
 def base_model1(n,data_train, data_valudation, data_test, label_train,label_valudation,label_test):
     alpha = 0.1
     data=np.concatenate((data_train,data_valudation),axis=0)
@@ -303,6 +317,7 @@ def base_model1(n,data_train, data_valudation, data_test, label_train,label_valu
     f=np.dot((1-alpha)*np.linalg.inv(np.eye(n)-laplace_matrix(n, data_train)),y)
     return f, data_train, label_train
 
+## this function evaluates the result of base model and outputs the roc values
 def base_model1_roc(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation, label1_test,\
            data2_train, data2_valudation, data2_test, label2_train, label2_valudation, label2_test):
     f1, data1_train, label1_train=base_model1(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation,label1_test)
@@ -312,6 +327,7 @@ def base_model1_roc(n,data1_train, data1_valudation, data1_test, label1_train,la
     
 
 ### model2 area
+## this function defines the adjance matrix of model2 which is different from the model1's
 def adjance_matrix(data):
     v=data.shape[0]
     u=data.shape[1]
