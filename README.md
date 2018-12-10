@@ -22,10 +22,11 @@ After long time running, the result will be exported as a txt file in the same f
 * **models.py:** This is the execution file, including all the models' realization codes.
 
 ## Data clean 
-In order to reduce data noise, the genes whose values' mean and standard deviation values are at low level in both datasets should be removed. The initial level threshold is 50%, it can be changed in the read_data function of the models.py file.
+In order to reduce data noise, the genes whose values' mean and standard deviation values are at low level in both datasets should be removed. The initial level threshold is 50%, and it can be changed in the read_data function of the models.py file.
 
 ## Cross-validation
 All models will run though the same cross validation process together. For both data sets, 20 samples are randomly selected for test part, 20 samples for validation part, the rest samples are training part. This process will run for 50 times. and the average performance on test data set is set as model's performance. 
+**Warning:** Inappropriate parameter selection will cause model generating bad result, and in this situation, model will set the roc result as 0 or 0.5. Please remove this result and corresponding parameters.
 
 
 
