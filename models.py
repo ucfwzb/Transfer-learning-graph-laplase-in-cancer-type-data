@@ -327,7 +327,7 @@ def base_model1_roc(n,data1_train, data1_valudation, data1_test, label1_train,la
     
 
 ### model2 area
-## this function defines the adjance matrix of model2 which is different from the model1's
+## this function defines the adjance matrix of model2 which is different from the model1's 
 def adjance_matrix(data):
     v=data.shape[0]
     u=data.shape[1]
@@ -340,6 +340,7 @@ def adjance_matrix(data):
     adjance=np.dot(np.dot(left_matrix,data),right_matrix)
     return adjance.T
 
+## This function intialized all the feature selection lists and lables
 def intial_fv_fu(data1,data2,label1_train,label2_train):
     n=data1.shape[1]
     m1=data1.shape[0]
@@ -351,7 +352,7 @@ def intial_fv_fu(data1,data2,label1_train,label2_train):
     fu2=np.concatenate((label2_train,np.repeat(0.,m2-label2_train.shape[0]).reshape((m2-label2_train.shape[0],1))),axis=0) 
     return fv1,fv2,fvc,fu1,fu2
 
-
+## In the approach process, this function is used to update the feature selection list fv. v=1,2
 def model2_update_fvi(n,adjance,fui,yvi,fvc,alpha,gamma):
     Y=(np.dot(adjance,fui)+alpha*yvi)/(1+alpha)-fvc
     model = linear_model.Lasso(1 / 2 * gamma)
@@ -361,6 +362,7 @@ def model2_update_fvi(n,adjance,fui,yvi,fvc,alpha,gamma):
     fvi=fvi.reshape((n,1))
     return fvi
 
+## In the approach process, this function is used to update the common feature selection list fc.
 def model2_update_fvc(n,adjance1,adjance2,fu1,fu2,fv1,fv2,yv1,yv2,alpha,gamma):
     Y=1/2*((np.dot(adjance1,fu1)+alpha*yv1)/(1+alpha)-fv1+(np.dot(adjance2,fu2)+alpha*yv2)/(1+alpha)-fv2)
     model = linear_model.Lasso(1 / 2 * gamma)
@@ -370,10 +372,13 @@ def model2_update_fvc(n,adjance1,adjance2,fu1,fu2,fv1,fv2,yv1,yv2,alpha,gamma):
     fvc=fvc.reshape((n,1))
     return fvc
 
+## In the approach process, this function is used to update the label's prediction.
 def model2_update_fui(n,adjance,fvi,fvc,alpha,yui):
     fui=(np.dot(adjance.T,fvi)+np.dot(adjance.T,fvc)+alpha*yui)/(1+alpha)
     return fui
 
+## this function trains model2 with given data sets and defined parameters, and return 
+## the roc values of model on validation data sets
 def train_model(n,data1_train, data1_valudation, label1_train,label1_valudation, data2_train,\
                 data2_valudation, label2_train, label2_valudation,alpha,gamma1,gamma2,gamma3):
     data1=np.concatenate((data1_train,data1_valudation),axis=0)
@@ -415,7 +420,7 @@ def train_model(n,data1_train, data1_valudation, label1_train,label1_valudation,
         
         
     
-    
+## This function gets the model2's performance on test data sets with give parameters
 def test_model(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation, label1_test,\
            data2_train, data2_valudation, data2_test, label2_train, label2_valudation, label2_test,alpha,gamma1,gamma2,gamma3):
     data1=np.concatenate((data1_train,data1_test),axis=0)
@@ -457,7 +462,7 @@ def test_model(n,data1_train, data1_valudation, data1_test, label1_train,label1_
     
 
 
-
+## this function recorders all the roc values of model2 on validation data and test data
 def model2(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation, label1_test,\
            data2_train, data2_valudation, data2_test, label2_train, label2_valudation, label2_test,alpha,gamma1,gamma2,gamma3):
     train_roc_auc1, train_roc_auc2=train_model(n,data1_train, data1_valudation, label1_train,label1_valudation, data2_train,\
@@ -469,7 +474,7 @@ def model2(n,data1_train, data1_valudation, data1_test, label1_train,label1_valu
     
     
 
-
+## This function records best roc values with given all possible parameters 
 def model2_roc_all(n,data1_train, data1_valudation, data1_test, label1_train,label1_valudation, label1_test,\
                    data2_train, data2_valudation, data2_test, label2_train, label2_valudation, label2_test):
     alpha = 0.01
@@ -497,7 +502,8 @@ def model2_roc_all(n,data1_train, data1_valudation, data1_test, label1_train,lab
 
 
     
-    
+## This function defines the base model2, which is the model without transfer learning, and it
+## returns the roc value with given data set and parameters
 def base_model2(n,data_train, data_valudation, data_test,label_train,label_valudation, label_test):
     alpha = 0.01
     data_train=np.concatenate((data_train,data_valudation),axis=0)
@@ -520,6 +526,7 @@ def base_model2(n,data_train, data_valudation, data_test,label_train,label_valud
     roc_auc = auc(fpr, tpr)
     return roc_auc
 
+## This function records all the roc values on validation data and test data 
 def base_model2_roc(n,data1_train, data1_valudation, data1_test,\
                label1_train,label1_valudation, label1_test,\
                data2_train, data2_valudation,data2_test, label2_train, label2_valudation, label2_test):
@@ -533,7 +540,7 @@ def base_model2_roc(n,data1_train, data1_valudation, data1_test,\
 
 
 
-### all models' results are got here 
+### This function records all models' results 
 def all_models(n,data1_train, data1_valudation, data1_test,\
                label1_train,label1_valudation, label1_test,\
                data2_train, data2_valudation,data2_test, label2_train, label2_valudation, label2_test):
@@ -585,7 +592,8 @@ def all_models(n,data1_train, data1_valudation, data1_test,\
     
 
     
-### whole process
+### This function is the cross validation process, it runs the CV process 50 times, and output every time's result 
+### in the txt file
 def whole_process(n,data_1_all,data_2_all,label_1_all,label_2_all,valudation_number,test_number,preprocess_scale):
 ### run 50 times, get the average
     final_model1_1_roc_all=0. 
@@ -667,6 +675,7 @@ def whole_process(n,data_1_all,data_2_all,label_1_all,label_2_all,valudation_num
 ###  main area    
     
 if __name__ == "__main__":
+    ### This is the parameter area
     preprocess_scale=False
     test_number=20
     valudation_number=20
