@@ -15,9 +15,9 @@ Download ov_total.zip, brca_total.zip, models.py into the same fold and decompre
 After long time running, the result will be exported as a txt file in the same fold.
 
 ## File description 
-* **ov_total.pkl(ov_total.zip):** This is **Ovarian Cancer** gene expression data set. The size of the data is 252 x 20531, the 252 is the number of samples, the 20531 is the number of genes and the label, and the first column is the label data. The value range is [0,20.4273].
+* **ov_total.pkl:** This is a sample file of **Ovarian Cancer** gene expression data set. The size of the data is 252 x 20531, the 252 is the number of samples, the 20531 is the number of genes and the label, and the first column is the label data. The value range is [0,20.4273].
 
-* **brca_total.pkl(brca_total.zip):** This is **Breast Cancer** gene expression set. The size of the data is 198 x 20531, the 198 is the number of samples, the 20531 is the number of genes and the label, and the first column is the label data. The value range is [0,20.3229].
+* **brca_total.pkl:** This is a sample file of **Breast Cancer** gene expression set. The size of the data is 198 x 20531, the 198 is the number of samples, the 20531 is the number of genes and the label, and the first column is the label data. The value range is [0,20.3229].
 
 * **models.py:** This is the execution file, including all the models' realization codes.
 
