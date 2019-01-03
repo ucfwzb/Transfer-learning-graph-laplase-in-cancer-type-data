@@ -15,11 +15,11 @@ Download four .pk files(sample_breast_expression.pk, sample_breast_label.pk, sam
 The results will be exported as two txt files in the same fold. 
 
 ## File description 
-* **sample_ov_expression.pk:** This is a sample file of **Ovarian Cancer** gene expression data set. The size of the data is 50 x 500, the 50 is the number of samples, the 500 is the number of genes. The value range is [0,20.4273].
+* **sample_ov_expression.pk:** This is a sample file of **Ovarian Cancer** gene expression data set. The size of the data is 50 x 200, the 50 is the number of samples, the 500 is the number of genes. The value range is [0,20.4273].
 
 * **sample_ov_label.pk:** This is a sample file of **Ovarian Cancer** label data. The size of it is 50.
 
-* **sample_breast_expression.pk:** This is a sample file of **Breast Cancer** gene expression set. The size of the data is 50 x 500, the 50 is the number of samples, the 500 is the number of genes. The value range is [0,20.3229].
+* **sample_breast_expression.pk:** This is a sample file of **Breast Cancer** gene expression set. The size of the data is 50 x 200, the 50 is the number of samples, the 500 is the number of genes. The value range is [0,20.3229].
 
 * **sample_breast_label.pk:** This is a sample file of **Breast Cancer** label data. The size of it is 50.
 
