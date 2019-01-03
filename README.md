@@ -10,16 +10,20 @@ code for bioinformatics submission
 - - scikit-learn
 
 ## How to run the project
-Download ov_total.zip, brca_total.zip, models.py into the same fold and decompress two zip files in the fold too. Turn on the terminator and move the path to the fold, run python command and execute:
-`python models.py`
-After long time running, the result will be exported as a txt file in the same fold.
+Download four .pk files(sample_breast_expression.pk, sample_breast_label.pk, sample_ov_expression.pk, sample_ov_label.pk) and two .py files(model1.py, model2.py) into the same fold. Turn on the terminator and move the path to the fold, run python command and execute:
+`python model1.py` or `python model2.py`
+The results will be exported as two txt files in the same fold. 
 
 ## File description 
-* **ov_total.pkl:** This is a sample file of **Ovarian Cancer** gene expression data set. The size of the data is 252 x 20531, the 252 is the number of samples, the 20531 is the number of genes and the label, and the first column is the label data. The value range is [0,20.4273].
+* **sample_ov_expression.pk:** This is a sample file of **Ovarian Cancer** gene expression data set. The size of the data is 50 x 500, the 50 is the number of samples, the 500 is the number of genes. The value range is [0,20.4273].
 
-* **brca_total.pkl:** This is a sample file of **Breast Cancer** gene expression set. The size of the data is 198 x 20531, the 198 is the number of samples, the 20531 is the number of genes and the label, and the first column is the label data. The value range is [0,20.3229].
+* **sample_ov_label.pk:** This is a sample file of **Ovarian Cancer** label data. The size of it is 50.
 
-* **models.py:** This is the execution file, including all the models' realization codes.
+* **sample_breast_expression.pk:** This is a sample file of **Breast Cancer** gene expression set. The size of the data is 50 x 500, the 50 is the number of samples, the 500 is the number of genes. The value range is [0,20.3229].
+
+* **sample_breast_label.pk:** This is a sample file of **Breast Cancer** label data. The size of it is 50.
+
+* **model[1,2].py:** This is the execution file, including the model[1,2]'s realization codes.
 
 ## Data clean 
 In order to reduce data noise, the genes whose values' mean and standard deviation values are at low level in both datasets should be removed. The initial level threshold is 50%, and it can be changed in the read_data function of the models.py file.
